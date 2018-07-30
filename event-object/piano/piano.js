@@ -68,6 +68,7 @@ function lowerSoundPlay() {
 
 function middleSoundPlay() {
 	for (let sound = 0; sound < pianoKeysArr.length; sound++) {
+
 		pianoKeysArr[sound].src = middleSounds[sound];
 	}
 }
@@ -84,7 +85,7 @@ for (let key = 0; key < pianoKeysArr.length; key++) {
 		if(altPressed) {
 			higherSoundPlay();
 		}
-
+		pianoKeysArr[key].currentTime = 0;
 		pianoKeysArr[key].play();
 	});
 }

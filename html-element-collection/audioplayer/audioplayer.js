@@ -25,22 +25,27 @@ const tracksArr = [
 	}
 ];
 
+let playStatus = false;
+
 function playerStateChange() {
 	return playerState.classList.toggle('play');
 }
 
 btnPlay.onclick = function () {
 	if (playerStateChange()) {
+		playStatus = true;
 		player.play();
 	}
 	else {
 		player.pause();
+		playStatus = false;
 	}
 };
 
 btnStop.onclick = function () {
 	player.pause();
 	player.currentTime = 0;
+	playStatus = false;
 
 	if(playerStateChange()) {
 		playerStateChange();
@@ -60,7 +65,10 @@ btnNext.onclick = function () {
 
 	player.src = tracksArr[currIndex].url;
 	title.title = tracksArr[currIndex].title;
-	player.play();
+
+	if(playStatus) {
+		player.play();
+	}
 };
 
 btnBack.onclick = function () {
@@ -72,5 +80,8 @@ btnBack.onclick = function () {
 
 	player.src = tracksArr[currIndex].url;
 	title.title = tracksArr[currIndex].title;
-	player.play();
+
+	if(playStatus) {
+		player.play();
+	}
 };
