@@ -6,37 +6,13 @@ const secretNav = document.getElementsByTagName('nav')[0];
 let secretCode = [];
 let secretCodeStr = '';
 
+let symbolArr = [
+	'KeyY', 'KeyT', 'KeyN', 'KeyJ', 'KeyK', 'KeyU', 'KeyB', 'KeyZ'
+];
+
 function passwordTry(event) {
-	// secretCode.push(event.key);
-	// console.log(event.code);
-
-	// secretCodeStr = secretCode.join('');
-
-	switch(event.code) {
-		case 'KeyY':
-			secretCode.push(event.key);
-			break;
-		case 'KeyT':
-			secretCode.push(event.key);
-			break;
-		case 'KeyN':
-			secretCode.push(event.key);
-			break;
-		case 'KeyJ':
-			secretCode.push(event.key);
-			break;
-		case 'KeyK':
-			secretCode.push(event.key);
-			break;
-		case 'KeyU':
-			secretCode.push(event.key);
-			break;
-		case 'KeyB':
-			secretCode.push(event.key);
-			break;
-		case 'KeyZ':
-			secretCode.push(event.key);
-			break;
+	if(symbolArr.includes(event.code)) {
+		secretCode.push(event.key);
 	}
 
 	secretCodeStr = secretCode.join('').toLowerCase();
@@ -48,9 +24,8 @@ function passwordTry(event) {
 	if(!event.ctrlKey) {
 		return;
 	}
-	switch (event.code) {
-		case 'KeyT':
-			secretNav.classList.toggle('visible');
+	if (event.code ===  'KeyT') {
+		secretNav.classList.toggle('visible');
 	}
 }
 
