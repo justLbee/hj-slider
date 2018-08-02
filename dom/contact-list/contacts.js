@@ -1,7 +1,7 @@
 'use strict';
 
 let contactObj = JSON.parse(loadContacts());
-let contactList, contactArgs
+let contactList, contactArgs;
 
 function addElement(name) {
 	contactList.innerHTML += `<li><strong>${name}</strong></li>`;
