@@ -18,8 +18,10 @@ function changePrice() {
 	amount++;
 	amountEl.innerHTML = `${amount}`;
 
+	console.log(getPriceFormatted(event.srcElement.getAttribute('data-price')));
+
 	total += Number(event.srcElement.getAttribute('data-price'));
-	totalEl.innerHTML = `${total}`;
+	totalEl.innerHTML = `${getPriceFormatted(total)}`;
 }
 
 document.addEventListener('DOMContentLoaded', init);
