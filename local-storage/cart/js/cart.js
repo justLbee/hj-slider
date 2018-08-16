@@ -248,7 +248,6 @@ function storageAdd(event) {
 	}
 	if (event.target.name === 'color') {
 		localStorage.color = event.target.value;
-		;
 	}
 }
 
