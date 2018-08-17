@@ -3,13 +3,10 @@
 const chat = document.querySelector('.chat');
 const chatStatus = chat.querySelector('.chat-status');
 const sendButton = chat.querySelector('.message-submit');
-const popUpOnline = chat.querySelector('.message-status > .message-text').cloneNode(true);
-const popUpLoading = chat.querySelector('.loading').cloneNode(true);
-const messageSent = chat.querySelector('.message-personal').cloneNode(true);
-const messageReceived = chat.querySelector('.messages-templates div:nth-child(2)').cloneNode(true);
 const contentMessages = chat.querySelector('.messages-content');
 const messageData = chat.querySelector('.message-input');
-
+const popUpOnline = chat.querySelector('.message-status > .message-text').cloneNode(true);
+const popUpLoading = chat.querySelector('.loading').cloneNode(true);
 const socketConnection = new WebSocket('wss://neto-api.herokuapp.com/chat');
 
 sendButton.addEventListener('click', sendMessage);
@@ -33,19 +30,6 @@ socketConnection.addEventListener('message', event => {
 		contentMessages.appendChild(popUpLoading);
 	}
 	updateMessageWindow(event.data, true)
-	//
-	// const msgText = messageReceived.querySelector('.message-text');
-	// const msgTime = messageReceived.querySelector('.timestamp');
-	// let time = new Date();
-	// let options = {
-	// 	hour: 'numeric',
-	// 	minute: 'numeric',
-	// };
-	//
-	// msgText.textContent = event.data;
-	// msgTime.textContent = time.toLocaleTimeString('ru', options);
-	//
-	// contentMessages.appendChild(messageReceived);
 });
 
 function sendMessage() {
@@ -55,22 +39,12 @@ function sendMessage() {
 	socketConnection.send(messageData.value);
 
 	updateMessageWindow(messageData.value, false);
-
-	// const msgText = messageSent.querySelector('.message-text');
-	// const msgTime = messageSent.querySelector('.timestamp');
-	// let time = new Date();
-	// let options = {
-	// 	hour: 'numeric',
-	// 	minute: 'numeric',
-	// };
-	//
-	// msgText.textContent = messageData.value;
-	// msgTime.textContent = time.toLocaleTimeString('ru', options);
-	//
-	// contentMessages.appendChild(messageSent);
 }
 
 function updateMessageWindow(message, received) {
+	const messageSent = chat.querySelector('.message-personal').cloneNode(true);
+	const messageReceived = chat.querySelector('.messages-templates div:nth-child(2)').cloneNode(true);
+
 	let time = new Date();
 	let options = {
 		hour: 'numeric',
