@@ -202,8 +202,6 @@ function updateCart(cartObj) {
 			location.reload();
 		});
 	}
-
-
 }
 
 function addToCartFunc() {
