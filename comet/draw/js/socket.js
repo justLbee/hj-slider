@@ -2,11 +2,18 @@
 
 const ws = new WebSocket('wss://neto-api.herokuapp.com/draw');
 
-editor.addEventListener('update', event => {
-	ws.send(event);
-	// console.log(event);
+function sendDraw(event) {
+	event.canvas.toBlob(blob => ws.send(blob));
+}
+
+ws.addEventListener('open', () => {
+	editor.addEventListener('update', sendDraw);
 });
 
-ws.addEventListener('message', event => {
-	// console.log(event);
+ws.addEventListener('close', () => {
+	editor.removeEventListener('update', sendDraw);
+});
+
+window.addEventListener('beforeunload', () => {
+	ws.close(1000, 'Сессия закрыта');
 });
