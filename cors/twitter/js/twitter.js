@@ -9,7 +9,7 @@ function loadData(url){
 		const script = document.createElement('script');
 		script.src = `${url}?jsonp=${functionName}`;
 		document.body.appendChild(script);
-	})
+	});
 }
 
 function insertData(user){
