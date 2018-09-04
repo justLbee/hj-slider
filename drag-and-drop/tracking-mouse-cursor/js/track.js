@@ -9,13 +9,22 @@ const boundsR = document.querySelector('.cat_position_for_right_eye').getBoundin
 function catEye(valueInt, position){
 	if(valueInt < boundsL.x && position === 'left') {
 		eyeLeft.style.left = valueInt / boundsL.x + '%';
-		eyeRight.style.left = valueInt / boundsR.x + '%';
+		eyeRight.style.left = valueInt / boundsL.x + '%';
+		// eyeRight.style.left = valueInt / boundsR.x + '%';
 	}
 
 	else if (valueInt > boundsL.x && position === 'left') {
 		eyeLeft.style.left = boundsL.width + boundsL.x / valueInt  + '%';
-		eyeRight.style.left = boundsR.width + boundsR.x / valueInt  + '%';
+
+		if (valueInt > boundsL.x && valueInt < boundsR.x) {
+			eyeRight.style.left = - boundsR.x / valueInt + '%';
+		}
+		else {
+			eyeRight.style.left = boundsL.width + boundsR.x / valueInt + '%';
+		}
 	}
+
+	else
 
 	if(valueInt < boundsL.y && position === 'top') {
 		eyeLeft.style.top = valueInt / boundsL.y + '%';
@@ -28,7 +37,7 @@ function catEye(valueInt, position){
 	}
 
 
-	console.log(boundsL, valueInt, eyeLeft.style.left);
+	console.log(boundsL, boundsR);
 }
 
 document.addEventListener('mousemove', event => {

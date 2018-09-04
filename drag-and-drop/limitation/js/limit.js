@@ -33,4 +33,5 @@ input.addEventListener('focusin', () => {
 
 input.addEventListener('focusout', () => {
 	eyes.classList.remove('active');
+	message.classList.remove('view');
 });
