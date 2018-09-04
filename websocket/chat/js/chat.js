@@ -55,7 +55,7 @@ function updateMessageWindow(message, received) {
 		const msgTextReceived = messageReceived.querySelector('.message-text');
 		const msgTimeReceived = messageReceived.querySelector('.timestamp');
 
-		msgTextReceived.textContent = event.data;
+		msgTextReceived.textContent = message;
 		msgTimeReceived.textContent = time.toLocaleTimeString('ru', options);
 
 		contentMessages.appendChild(messageReceived);
