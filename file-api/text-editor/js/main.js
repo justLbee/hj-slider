@@ -24,7 +24,6 @@ class TextEditor {
   readFile( file ) {
   }
   setFilename( filename ) {
-    this.filenameContainer.textContent = filename;
   }
   showHint( e ) {
   }
@@ -38,7 +37,7 @@ class TextEditor {
   }
   save() {
     localStorage[ this.storageKey ] = this.contentContainer.value;
-  }
+	}
 }
 
 new TextEditor( document.getElementById( 'editor' ));

@@ -1,71 +1,70 @@
 'use strict';
 
-// const dragTextFile = document.querySelector('.text-editor__hint');
-// const textEditor = document.getElementById('editor');
-//
-//
-// textEditor.addEventListener('drop', loadFile);
-// textEditor.addEventListener('dragover', event => {
-// 	dragTextFile.classList.add('text-editor__hint_visible');
-//
-// 	event.preventDefault();
-// });
-//
-// function loadFile(e) {
-// 	event.preventDefault();
-// 	dragTextFile.classList.remove('text-editor__hint_visible');
-//
-// 	const files = Array.from(event.dataTransfer.files);
-// 	console.log(files);
-// }
+// Создаем экземпляр класса
+const editorExemplar = new TextEditor(document.getElementById('editor'));
 
-const fuck = new TextEditor(document.getElementById('editor'));
-
-fuck.registerEvents = function () {
+// Слушатели событий переноса файлов
+editorExemplar.registerEvents = function () {
 	this.container.addEventListener('drop', this.loadFile);
 	this.container.addEventListener('dragover', this.showHint);
 };
 
-fuck.loadFile = function (e) {
+
+// Описываем работу каждой из необходимых функций
+// Переновс файла drag adn drop
+editorExemplar.loadFile = function (e) {
 	e.preventDefault();
 	const file = Array.from(event.dataTransfer.files)[0];
 
-	fuck.hideHint();
-	fuck.readFile(file);
+	editorExemplar.hideHint();
+	editorExemplar.readFile(file);
 };
 
-fuck.readFile = function (file) {
+// Читаем файл, отсекаем не текст, выводим содержимое файла в окно редактора, сохраняем в локальное хранилище
+editorExemplar.readFile = function (file) {
 	const reader = new FileReader();
+	const fileTypeRegExp = /^text\//;
 	let editorContent = this.contentContainer.value;
+
+	try {
+		if(!fileTypeRegExp.test(file.type)) {
+			console.log();
+			throw new Error ('Неверный формат файла');
+		}
+	}catch (e) {
+		console.log(e.message);
+		return;
+	}
 
 	reader.addEventListener('load', event => {
 		editorContent += event.currentTarget.result.toString();
 
 		this.contentContainer.value = editorContent;
-		console.log(editorContent);
 
-		console.log(this.filenameContainer.textContent);
-
-		fuck.setFilename(file.name);
+		editorExemplar.setFilename(file.name);
 	});
 
 	reader.readAsText(file);
+
+	this.save();
 };
 
-fuck.setFilename = function (name) {
+// Меняем название файла в шапке
+editorExemplar.setFilename = function (name) {
 	this.filenameContainer.textContent = name;
 };
 
-fuck.showHint = function (e) {
+// Показываем подсказку при наведении файла в окно редактора
+editorExemplar.showHint = function (e) {
 	e.preventDefault();
 	const hint = this.querySelector( '.text-editor__hint' );
 
 	hint.classList.add('text-editor__hint_visible');
 };
 
-
-fuck.hideHint = function () {
+// Прячем подсказку после добавления файла
+editorExemplar.hideHint = function () {
 	this.hintContainer.classList.remove('text-editor__hint_visible');
 };
 
-fuck.registerEvents();
+editorExemplar.registerEvents();
