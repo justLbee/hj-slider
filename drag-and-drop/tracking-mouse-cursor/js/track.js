@@ -10,7 +10,6 @@ function catEye(valueInt, position){
 	if(valueInt < boundsL.x && position === 'left') {
 		eyeLeft.style.left = valueInt / boundsL.x + '%';
 		eyeRight.style.left = valueInt / boundsL.x + '%';
-		// eyeRight.style.left = valueInt / boundsR.x + '%';
 	}
 
 	else if (valueInt > boundsL.x && position === 'left') {
@@ -35,9 +34,6 @@ function catEye(valueInt, position){
 		eyeLeft.style.top = boundsL.height + boundsL.y / valueInt  + '%';
 		eyeRight.style.top = boundsR.height + boundsR.y / valueInt  + '%';
 	}
-
-
-	console.log(boundsL, boundsR);
 }
 
 document.addEventListener('mousemove', event => {
