@@ -56,7 +56,7 @@ spriteGen.updateFilesInfo = function (files) {
 const cssCodeArr = [];
 
 spriteGen.generateSprite = function (event) {
-	// Создаем csnvas
+	// Создаем canvas
 	const canvas = document.createElement('canvas');
 	const ctx = canvas.getContext('2d');
 	let canvasSize = {
@@ -64,7 +64,9 @@ spriteGen.generateSprite = function (event) {
 		height: 0
 	};
 
+	// Проход по массиву с изображениями
 	spriteGen.images.forEach((image, index) => {
+		// Создание и заполнения объекта с информацией об изображении
 		let cssCodeObj = {};
 
 		cssCodeObj.className = `.${image.name}`;
@@ -72,12 +74,14 @@ spriteGen.generateSprite = function (event) {
 		cssCodeObj.width = `${image.width}px`;
 		cssCodeObj.height = `${image.height}px`;
 
+		//Добавление объекта с информацией в массив для css кода
 		cssCodeArr.push(cssCodeObj);
 
 		const pattern = ctx.createPattern(image, 'no-repeat');
 
 		ctx.beginPath();
 
+		// Отрисовка изображений в канвас
 		ctx.fillStyle = pattern;
 		ctx.drawImage(image, nextImage(canvasSize.width, index).x, nextImage(canvasSize.width).y);
 
@@ -86,6 +90,7 @@ spriteGen.generateSprite = function (event) {
 		spriteGen.imagesCount++;
 	});
 
+	// Вывод канвас в тег с изображением
 	spriteGen.imageElement.src = canvas.toDataURL();
 
 	spriteGen.imagesCountContainer.textContent = spriteGen.imagesCount;
@@ -93,6 +98,7 @@ spriteGen.generateSprite = function (event) {
 	spriteGen.generateCss(cssCodeArr);
 };
 
+// генерация и заполнение окна css кодом
 spriteGen.generateCss = function (cssArr) {
 	let css = `.icon {
 		display: inline-block;
@@ -110,6 +116,7 @@ spriteGen.generateCss = function (cssArr) {
 
 };
 
+// Определение положения следующего изображения на канвасе
 function nextImage(width, index) {
 	return index === 0 ? {x: 0, y: 0} : {x: 0 + width, y: 0};
 }
