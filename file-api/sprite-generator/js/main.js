@@ -50,6 +50,10 @@ spriteGen.updateFilesInfo = function (files) {
 
 		// Записываем в массив изображений
 		this.images.push(img);
+
+		img.addEventListener('load', event => {
+			URL.revokeObjectURL(event.currentTarget.src);
+		});
 	});
 };
 // Создаем пустой массив объектов, для добавления css кода
@@ -64,6 +68,8 @@ spriteGen.generateSprite = function (event) {
 		height: 0
 	};
 
+	console.log(spriteGen.images);
+
 	// Проход по массиву с изображениями
 	spriteGen.images.forEach((image, index) => {
 		// Создание и заполнения объекта с информацией об изображении
@@ -77,12 +83,9 @@ spriteGen.generateSprite = function (event) {
 		//Добавление объекта с информацией в массив для css кода
 		cssCodeArr.push(cssCodeObj);
 
-		const pattern = ctx.createPattern(image, 'no-repeat');
-
 		ctx.beginPath();
 
 		// Отрисовка изображений в канвас
-		ctx.fillStyle = pattern;
 		ctx.drawImage(image, nextImage(canvasSize.width, index).x, nextImage(canvasSize.width).y);
 
 		canvasSize.width += image.width;

@@ -25,71 +25,76 @@ new iLayout(document.getElementById('layout'));
 const instagramLayout = new iLayout(document.getElementById('layout'));
 
 instagramLayout.registerEvents = function () {
-	console.log(this.container);
-	// const layout = this.container.getElementById('layout');
 	this.positionsContainer.addEventListener('drop', instagramLayout.loadFile);
 	this.positionsContainer.addEventListener('dragover', instagramLayout.showHint);
+	this.positionsContainer.addEventListener('dragleave', e => {
+		e.preventDefault();
+		e.target.classList.remove('layout__item_active');
+	});
+
+	this.actionButton.addEventListener('click', instagramLayout.generateHTML)
 };
 
 instagramLayout.loadFile = function (event) {
 	event.preventDefault();
+	event.target.classList.remove('layout__item_active');
 	const file = Array.from(event.dataTransfer.files);
 
 	let position = event.target.classList[1].split('_').pop();
 	let canvasPosition = event.target.classList[1];
 
-	instagramLayout.updateImageData(position, file, canvasPosition);
-	instagramLayout.drawImage(position, canvasPosition);
-	//
-	// instagramLayout.layout[position] = ;
-	// console.log(instagramLayout.layout);
+	instagramLayout.layout[position] = {
+		width: event.target.offsetWidth,
+		height: event.target.offsetHeight
+	};
+
+	instagramLayout.updateImageData(file, canvasPosition, position);
 };
 
 instagramLayout.showHint = function (event) {
 	event.preventDefault();
+
+	event.target.classList.add('layout__item_active');
 };
 
-instagramLayout.updateImageData = function (position, file, canvasPosition) {
+instagramLayout.updateImageData = function (file, canvasPosition, position) {
+	// Создаем изображения из файла
+	console.log(this.layout);
+	Array.from(file).forEach(file => {
+		const imgElement = this.container.querySelector(`.${canvasPosition}`);
+
+		const img = document.createElement('img');
+		imgElement.appendChild(img);
+		img.classList.add('layout__image');
+
+		img.src = URL.createObjectURL(file);
+	});
+};
+
+instagramLayout.generateHTML = function () {
+	const topImg = document.querySelector('.layout__item_top img');
+	const leftImg = document.querySelector('.layout__item_left img');
+	const bottomImg = document.querySelector('.layout__item_bottom img');
+
 	const canvas = document.createElement('canvas');
 	const ctx = canvas.getContext('2d');
-	const imgElement = this.container.querySelector(`.${canvasPosition}`);
+
+	canvas.width = instagramLayout.layout.left.width + instagramLayout.layout.top.width;
+	canvas.height = instagramLayout.layout.left.height;
+
+	if(topImg && bottomImg && leftImg) {
+		ctx.drawImage(leftImg, 0, 0);
+		ctx.drawImage(topImg, instagramLayout.layout.left.width, 0);
+		ctx.drawImage(bottomImg, instagramLayout.layout.left.width, instagramLayout.layout.top.height);
+	}
 
 	const img = document.createElement('img');
 
-	// Создаем изображения из файла
-	Array.from(file).forEach(file => {
-		img.src = URL.createObjectURL(file);
-		this.layout[position] = img.src;
+	img.src = canvas.toDataURL();
 
-		const pattern = ctx.createPattern(img.src, 'no-repeat');
-		ctx.beginPath();
+	instagramLayout.result.textContent = img.outerHTML;
 
-		ctx.fillStyle = pattern;
-		ctx.drawImage(img.src, 0, 0);
-	});
-
-
-	// Отрисовка изображений в канвас
-
-	imgElement.appendChild(img).src = canvas.toDataURL();
-};
-
-instagramLayout.drawImage = function (position, canvasPosition) {
-	// const canvas = document.createElement('canvas');
-	// const ctx = canvas.getContext('2d');
-	// const imgElement = this.container.querySelector(`.${canvasPosition}`);
-	//
-	//
-	// const pattern = ctx.createPattern(this.layout[position], 'no-repeat');
-	//
-	// ctx.beginPath();
-	//
-	// // Отрисовка изображений в канвас
-	// ctx.fillStyle = pattern;
-	// ctx.drawImage(this.layout[position], 0, 0);
-	//
-	//
-	// imgElement.src = canvas.toDataURL();
+	console.log(img.outerHTML);
 };
 
 
