@@ -1,25 +1,18 @@
 'use strict';
-const showMoreBut = document.querySelector('.show-more');
-
-showMoreBut.addEventListener('click', Cart);
+const itemsList = document.querySelector('.items-list');
 
 function Cart() {
-	const itemsList = document.getElementsByClassName('items-list');
+	itemsList.addEventListener('click', e => {
+		e.preventDefault();
+		console.log(e.currentTarget);
+		if (e.target.classList.contains('add-to-cart')) {
+			const element = {
+				title: e.target.dataset.title,
+				price: e.target.dataset.price
+			};
 
-	Array.from(itemsList).forEach(item => {
-		let buttons = item.querySelectorAll('.add-to-cart');
-
-		Array.from(buttons).forEach(button => {
-			button.addEventListener('click', () => {
-				const item = {
-					title: event.target.dataset.title,
-					price: event.target.dataset.price
-				};
-
-				addToCart(item);
-			})
-		})
-
+			addToCart(element);
+		}
 	});
 }
 
