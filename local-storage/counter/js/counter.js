@@ -1,7 +1,6 @@
 'use strict';
 
 function init(number) {
-	console.log(number);
 	const buttons = document.querySelector('.wrap-btns');
 	const counter = document.getElementById('counter');
 	let jsCounter;
@@ -16,7 +15,7 @@ function init(number) {
 		if(event.target.id === 'increment') {
 			jsCounter++
 		}
-		if(event.target.id === 'decrement'){
+		if(event.target.id === 'decrement' && jsCounter !== 0){
 			jsCounter--
 		}
 		if(event.target.id === 'reset') {

@@ -9,7 +9,6 @@ const addToCartForm = document.getElementById('AddToCartForm');
 
 addToCart.addEventListener('click', addToCartFunc);
 addToCartForm.addEventListener('click', storageAdd);
-
 // Получение цветов
 fetch('https://neto-api.herokuapp.com/cart/colors', {
 	credentials: 'same-origin',
@@ -108,8 +107,6 @@ function addColors(colorsObj) {
 }
 
 function addSizes(sizesObj) {
-	// console.log(sizesObj);
-
 	sizesObj.forEach(size => {
 		let available, disabled;
 		if (size.isAvailable) {
@@ -142,19 +139,22 @@ function addSizes(sizesObj) {
 
 function updateCart(cartObj) {
 	let fullPrice = 0;
+	while (cartSnippets.firstChild) {
+		cartSnippets.removeChild(cartSnippets.firstChild);
+	}
+
 	cartObj.forEach(good => {
 		fullPrice = good.price * good.quantity;
-
 		cartSnippets.innerHTML += `
 		<div class="quick-cart-product quick-cart-product-static" id="quick-cart-product-${good.productId}" style="opacity: 1;">
-  	<div class="quick-cart-product-wrap">
-    	<img src="${good.pic}" title="${good.title}">
-    	<span class="s1" style="background-color: #000; opacity: .5">$800.00</span>
-    	<span class="s2"></span>
-  	</div>
-  	<span class="count hide fadeUp" id="quick-cart-product-count-${good.productId}">${good.quantity}</span>
-  	<span class="quick-cart-product-remove remove" data-id="${good.productId}"></span>
-	</div>`
+  		<div class="quick-cart-product-wrap">
+    		<img src="${good.pic}" title="${good.title}">
+    		<span class="s1" style="background-color: #000; opacity: .5">$800.00</span>
+    		<span class="s2"></span>
+  		</div>
+  		<span class="count hide fadeUp" id="quick-cart-product-count-${good.productId}">${good.quantity}</span>
+  		<span class="quick-cart-product-remove remove" data-id="${good.productId}"></span>
+		</div>`
 	});
 
 	cartSnippets.innerHTML += `
@@ -172,13 +172,12 @@ function updateCart(cartObj) {
 
 	if (cartObj.length === 0) {
 		quickCart.classList.remove('open');
-
-
 	}
 	else {
 		removeId.append('productId', `${removeButton.dataset.id}`);
 
 		removeButton.addEventListener('click', event => {
+			event.preventDefault();
 			fetch('https://neto-api.herokuapp.com/cart/remove', {
 				body: removeId,
 				credentials: 'same-origin',
@@ -199,7 +198,6 @@ function updateCart(cartObj) {
 				.catch((err) => {
 					console.log(err);
 				});
-			location.reload();
 		});
 	}
 }
@@ -233,11 +231,12 @@ function addToCartFunc() {
 		.then((res) => {
 			return res.json();
 		})
+		.then((data) => {
+			updateCart(data);
+		})
 		.catch((err) => {
 			console.log(err);
 		});
-
-	location.reload();
 }
 
 function storageAdd(event) {
