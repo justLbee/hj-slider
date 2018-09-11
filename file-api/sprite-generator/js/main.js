@@ -39,21 +39,32 @@ spriteGen.uploadFiles = function (event) {
 spriteGen.updateFilesInfo = function (files) {
 	// Регулярное выражение для отсечения расширения в имени
 	const nameRegExp = /(\.png)||(\.img)/gi;
+	const fileType = /^image\//;
 
 	files.forEach(file => {
 		const img = document.createElement('img');
 
-		// Создаем изображения из файла
-		img.src = URL.createObjectURL(file);
-		// Убираем расширение
-		img.name = file.name.replace(nameRegExp, '');
+		try {
+			if(!fileType.test(file.type)) {
+				console.log();
+				throw new Error ('Неверный формат файла');
+			}
 
-		// Записываем в массив изображений
-		this.images.push(img);
+			// Создаем изображения из файла
+			img.src = URL.createObjectURL(file);
+			// Убираем расширение
+			img.name = file.name.replace(nameRegExp, '');
 
-		img.addEventListener('load', event => {
-			URL.revokeObjectURL(event.currentTarget.src);
-		});
+			// Записываем в массив изображений
+			this.images.push(img);
+
+			img.addEventListener('load', event => {
+				URL.revokeObjectURL(event.currentTarget.src);
+			});
+		}catch (e) {
+			console.log(e.message);
+			return;
+		}
 	});
 };
 // Создаем пустой массив объектов, для добавления css кода

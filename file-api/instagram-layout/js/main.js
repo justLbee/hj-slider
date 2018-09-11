@@ -59,15 +59,25 @@ instagramLayout.showHint = function (event) {
 
 instagramLayout.updateImageData = function (file, canvasPosition, position) {
 	// Создаем изображения из файла
-	console.log(this.layout);
 	Array.from(file).forEach(file => {
-		const imgElement = this.container.querySelector(`.${canvasPosition}`);
+		const fileType = /^image\//;
+		try {
+			if(!fileType.test(file.type)) {
+				throw new Error ('Неверный формат файла');
+			}
 
-		const img = document.createElement('img');
-		imgElement.appendChild(img);
-		img.classList.add('layout__image');
+			const imgElement = this.container.querySelector(`.${canvasPosition}`);
 
-		img.src = URL.createObjectURL(file);
+			const img = document.createElement('img');
+			imgElement.appendChild(img);
+			img.classList.add('layout__image');
+
+			img.src = URL.createObjectURL(file);
+		}catch (e) {
+			console.log(e.message);
+			return;
+		}
+
 	});
 };
 
