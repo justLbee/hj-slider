@@ -37,7 +37,7 @@ function addTabs(data) {
 
 const tabsNavEl = document.querySelectorAll('.tabs-nav li a');
 
-tabsNavEl[0].classList.add('ui-tabs-active');
+tabsNavEl[0].parentElement.classList.add('ui-tabs-active');
 
 Array.from(tabsNavEl).forEach(tab => {
 	tab.addEventListener('click', changeTab)
@@ -46,8 +46,8 @@ Array.from(tabsNavEl).forEach(tab => {
 function changeTab() {
 	const currentTab = document.querySelector('.ui-tabs-active');
 
+	this.parentElement.classList.add('ui-tabs-active');
 	currentTab.classList.remove('ui-tabs-active');
-	this.classList.add('ui-tabs-active');
 
 	Array.from(tabsContent).forEach(tab => {
 		tab.childNodes.forEach(article => {
