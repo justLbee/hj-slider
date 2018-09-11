@@ -34,7 +34,6 @@ spriteGen.uploadFiles = function (event) {
 
 	spriteGen.updateFilesInfo(files);
 };
-
 // Записываем информацию о файлах
 spriteGen.updateFilesInfo = function (files) {
 	// Регулярное выражение для отсечения расширения в имени
@@ -68,7 +67,6 @@ spriteGen.updateFilesInfo = function (files) {
 	});
 };
 // Создаем пустой массив объектов, для добавления css кода
-const cssCodeArr = [];
 
 spriteGen.generateSprite = function (event) {
 	// Создаем canvas
@@ -79,7 +77,8 @@ spriteGen.generateSprite = function (event) {
 		height: 0
 	};
 
-	console.log(spriteGen.images);
+	spriteGen.imagesCount = 0;
+	const cssCodeArr = [];
 
 	// Проход по массиву с изображениями
 	spriteGen.images.forEach((image, index) => {
